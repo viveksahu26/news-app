@@ -60,7 +60,6 @@ func (c *Client) FetchEverything(query, page string) (*Results, error) {
 	defer resp.Body.Close()
 
 	body, err := ioutil.ReadAll(resp.Body)
-	fmt.Println("body: ", string(body))
 	if err != nil {
 		return nil, err
 	}
@@ -71,4 +70,10 @@ func (c *Client) FetchEverything(query, page string) (*Results, error) {
 
 	res := &Results{}
 	return res, json.Unmarshal(body, res)
+}
+
+//  format the date instead of using the default value
+func (a *Article) FormatPublishedDate() string {
+	year, month, day := a.PublishedAt.Date()
+	return fmt.Sprintf("%v %d, %d", month, day, year)
 }

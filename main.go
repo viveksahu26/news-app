@@ -30,10 +30,28 @@ var newsapi *news.Client
 //template.ParseFiles is wrapped with template.Must so that the code panics if an error is obtained while parsing the template file
 var tpl = template.Must(template.ParseFiles("index.html"))
 
+// To determine if the last page of results
+func (s *Search) IsLastPage() bool {
+	return s.NextPage >= s.TotalPages
+}
+
+func (s *Search) CurrentPage() int {
+	if s.NextPage == 1 {
+		return s.NextPage
+	}
+
+	return s.NextPage - 1
+}
+
+func (s *Search) PreviousPage() int {
+	return s.CurrentPage() - 1
+}
+
 func searchHandler(newsapi *news.Client) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		u, err := url.Parse((r.URL.String()))
 		fmt.Println("r.URL.String(): ", r.URL.String())
+		fmt.Println("u ----> ", u)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -56,8 +74,6 @@ func searchHandler(newsapi *news.Client) http.HandlerFunc {
 			return
 		}
 
-		fmt.Println("%+v", results)
-
 		nextPage, err := strconv.Atoi(page)
 		fmt.Println("nextPage: ", nextPage)
 		if err != nil {
@@ -70,6 +86,10 @@ func searchHandler(newsapi *news.Client) http.HandlerFunc {
 			NextPage:   nextPage,
 			TotalPages: int(math.Ceil(float64(results.TotalResults) / float64(newsapi.PageSize))),
 			Results:    results,
+		}
+
+		if ok := !search.IsLastPage(); ok {
+			search.NextPage++
 		}
 
 		buf := &bytes.Buffer{}
