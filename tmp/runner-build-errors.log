@@ -1,0 +1,4 @@
+# github.com/freshman-tech/news-demo-starter-files/news
+news\news.go:30:6: Results redeclared in this block
+	C:\Users\smart\go\src\github.com\news-demo-starter-files\news\news.go:12:6: previous declaration
+news\news.go:33:17: undefined: Article
