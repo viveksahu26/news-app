@@ -12,8 +12,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/freshman-tech/news-demo-starter-files/news"
 	"github.com/joho/godotenv"
+	"github.com/viveksahu26/news-app/news"
 )
 
 type Search struct {
@@ -137,7 +137,7 @@ func main() {
 	if apiKey == "" {
 		log.Fatal("Env: apiKey must be set")
 	}
-
+	fmt.Println("API is: ", apiKey)
 	myClient := &http.Client{Timeout: 10 * time.Second}
 	newsapi = news.NewClient(myClient, apiKey, 20)
 

@@ -1,5 +1,4 @@
-module github.com/freshman-tech/news-demo-starter-files
-
+module github.com/viveksahu26/news-app
 go 1.15
 
 require (
