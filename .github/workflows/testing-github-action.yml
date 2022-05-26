@@ -1,0 +1,8 @@
+name: learn-github-actions
+on: [push]
+jobs:
+  for-testing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: echo "Hello, Setting up your first GA."
